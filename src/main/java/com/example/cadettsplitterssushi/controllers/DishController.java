@@ -34,7 +34,6 @@ public class DishController {
     @ResponseBody
     public ResponseEntity<Object> getDishes(){
         List<Dish> availableDishes = dishService.getAllDishes();
-
         if (availableDishes.isEmpty()){
             return new ResponseEntity<>("No dishes in the database.", HttpStatus.OK);
         } else {

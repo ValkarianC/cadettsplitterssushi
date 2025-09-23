@@ -1,6 +1,9 @@
 package com.example.cadettsplitterssushi.services;
 
 import com.example.cadettsplitterssushi.entities.Dish;
+import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
+import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
+import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,7 @@ import org.springframework.web.client.RestClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DishService implements DishServiceInterface{
@@ -31,14 +35,30 @@ public class DishService implements DishServiceInterface{
 
     @Override
     public Dish createNewDish(Dish dish) {
-        dishRepository.save(dish);
-        setDisplayPrice(dish);
-        return dish;
+        if (dish.getName().isEmpty() || dish.getName().isBlank()){
+            throw new EmptyFieldException("dish", "name");
+        }
+        if (dish.getPrice().isEmpty() || dish.getPrice().isBlank()){
+            throw new EmptyFieldException("dish", "price");
+        }
+        try {
+            Double.parseDouble(dish.getPrice());
+        } catch (NumberFormatException e){
+            throw new IncorrectFormatException("Dish", "price", dish.getPrice(), "Integer, ex. '10' -or- Double, ex. 20.6");
+        }
+        Dish dishToSave = dishRepository.save(dish);
+        setDisplayPrice(dishToSave);
+        return dishToSave;
     }
 
     @Override
     public void removeDishByID(Long id) {
-
+        Optional<Dish> dishToRemove = dishRepository.findById(id);
+        if (dishToRemove.isEmpty()){
+            throw new ResourceNotFoundException("Dish", "ID", id);
+        } else {
+            dishRepository.deleteById(id);
+        }
     }
 
 
