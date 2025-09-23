@@ -2,19 +2,23 @@ package com.example.cadettsplitterssushi.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
@@ -44,22 +48,22 @@ public class SecurityConfig {
     InMemoryUserDetailsManager userDetailsManager(){
         UserDetails lyndseyfox = User
                 .withUsername("lynseyfox")
-                .password("Lf123!")
+                .password("{noop}Lf123!")
                 .roles("ADMIN")
                 .build();
         UserDetails christofferfrisk = User
                 .withUsername("christofferfrisk")
-                .password("Cf123!")
+                .password("{noop}Cf123!")
                 .roles("USER")
                 .build();
         UserDetails niklaseinarsson = User
                 .withUsername("niklaseinarsson")
-                .password("Ne123!")
+                .password("{noop}Ne123!")
                 .roles("USER")
                 .build();
         UserDetails benjaminportsmouth = User
                 .withUsername("benjaminportsmouth")
-                .password("Bp123!")
+                .password("{noop}Bp123!")
                 .roles("USER")
                 .build();
 
