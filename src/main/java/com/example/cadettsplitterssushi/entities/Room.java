@@ -10,19 +10,23 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(length = 30, name = "room_name")
+    @Column(length = 30, name = "room_name", nullable = false)
     private String name;
 
-    @Column(name = "room_capacity")
-    private long guestCapacity;
+    @Column(name = "room_capacity", nullable = false)
+    private Long guestCapacity;
+
+    @Column(name = "room_is_available", nullable = false)
+    private Boolean isAvailable;
 
     public Room() {
     }
 
-    public Room(long id, String name, long guestCapacity) {
+    public Room(long id, String name, Long guestCapacity, Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.guestCapacity = guestCapacity;
+        this.isAvailable = isAvailable;
     }
 
     public long getId() {
@@ -41,11 +45,19 @@ public class Room {
         this.name = name;
     }
 
-    public long getGuestCapacity() {
+    public Long getGuestCapacity() {
         return guestCapacity;
     }
 
-    public void setGuestCapacity(long guestCapacity) {
+    public void setGuestCapacity(Long guestCapacity) {
         this.guestCapacity = guestCapacity;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 }

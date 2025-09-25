@@ -22,17 +22,8 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String test(){
-        //dishService.convertCurrency();
-        return "Hello There!";
-    }
-
-
     // ADMIN & USER ENDPOINTS
     @GetMapping("/dishes")
-    @ResponseBody
     public ResponseEntity<Object> getDishes(){
         List<DishDTO> availableDishes = dishService.getAllDishes();
         if (availableDishes.isEmpty()){
@@ -44,13 +35,11 @@ public class DishController {
 
     // ADMIN ENDPOINTS
     @PostMapping("/add-dish")
-    @ResponseBody
     public ResponseEntity<DishDTO> addNewDish(@RequestBody Dish dish){
         return new ResponseEntity<>(dishService.createNewDish(dish), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remdish/{id}")
-    @ResponseBody
     public ResponseEntity<String> removeDish(@PathVariable("id")long id){
         dishService.removeDishByID(id);
         return new ResponseEntity<>("Dish with ID : " + id + " has been removed", HttpStatus.OK);
