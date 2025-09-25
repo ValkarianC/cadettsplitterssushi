@@ -13,9 +13,8 @@ public class Booking {
     @Column(name = "booking_id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(name = "booking_customer", length = 50, nullable = false)
+    private String customer;
 
     @Column(name = "booking_guest_number")
     private Long numberOfGuests;
@@ -41,7 +40,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(long id, Customer customer, Long numberOfGuests, Room room, List<Dish> dishes, Double totalPrice, boolean isCancelled) {
+    public Booking(long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, Double totalPrice, boolean isCancelled) {
         this.id = id;
         this.customer = customer;
         this.numberOfGuests = numberOfGuests;
@@ -59,11 +58,11 @@ public class Booking {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 

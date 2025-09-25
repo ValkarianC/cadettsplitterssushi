@@ -13,9 +13,8 @@ public class Order {
     @Column(name = "order_id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(name = "customer_id", length = 50, nullable = false)
+    private String customer;
 
     @ManyToMany
     @JoinTable(
@@ -31,7 +30,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(long id, Customer customer, List<Dish> dishes, Double totalPrice) {
+    public Order(long id, String customer, List<Dish> dishes, Double totalPrice) {
         this.id = id;
         this.customer = customer;
         this.dishes = dishes;
@@ -46,11 +45,11 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 
