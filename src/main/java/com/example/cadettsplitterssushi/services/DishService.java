@@ -48,7 +48,7 @@ public class DishService implements DishServiceInterface{
     }
 
     @Override
-    public void removeDishByID(Long id) {
+    public void removeDishByID(long id) {
         Optional<Dish> dishToRemove = dishRepository.findById(id);
         if (dishToRemove.isEmpty()){
             throw new ResourceNotFoundException("Dish", "ID", id);

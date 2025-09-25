@@ -51,7 +51,7 @@ public class DishController {
 
     @DeleteMapping("/remdish/{id}")
     @ResponseBody
-    public ResponseEntity<String> removeDish(@PathVariable("id")Long id){
+    public ResponseEntity<String> removeDish(@PathVariable("id")long id){
         dishService.removeDishByID(id);
         return new ResponseEntity<>("Dish with ID : " + id + " has been removed", HttpStatus.OK);
     }
