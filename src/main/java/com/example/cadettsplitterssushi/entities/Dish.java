@@ -15,13 +15,13 @@ public class Dish {
     private String name;
 
     @Column(name = "dish_price")
-    private String price;
+    private double price;
 
 
     public Dish() {
     }
 
-    public Dish(long id, String name, String price) {
+    public Dish(long id, String name, double price) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -43,11 +43,11 @@ public class Dish {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

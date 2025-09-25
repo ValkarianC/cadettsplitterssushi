@@ -1,54 +1,50 @@
 package com.example.cadettsplitterssushi.services;
 
+import com.example.cadettsplitterssushi.dto.DishDTO;
 import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
 import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
 import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
+import com.example.cadettsplitterssushi.util.CurrencyConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class DishService implements DishServiceInterface{
 
     private final DishRepository dishRepository;
+    private final CurrencyConverter currencyConverter;
 
     @Autowired
-    public DishService(DishRepository dishRepository) {
+    public DishService(DishRepository dishRepository, CurrencyConverter currencyConverter) {
         this.dishRepository = dishRepository;
+        this.currencyConverter = currencyConverter;
     }
 
     @Override
-    public List<Dish> getAllDishes() {
-        ArrayList<Dish> listOfDishes = (ArrayList<Dish>) dishRepository.findAll();
-        for (Dish dish : listOfDishes){
-            setDisplayPrice(dish);
+    public List<DishDTO> getAllDishes() {
+        ArrayList<DishDTO> dishDTOList = new ArrayList<>();
+        for (Dish dish : dishRepository.findAll()){
+            dishDTOList.add(new DishDTO(dish.getId(), dish.getName(), dish.getPrice(), currencyConverter.convertFromSEKToEUR(dish.getPrice())));
         }
-        return listOfDishes;
+        return dishDTOList;
     }
 
     @Override
-    public Dish createNewDish(Dish dish) {
+    public DishDTO createNewDish(Dish dish) {
         if (dish.getName().isEmpty() || dish.getName().isBlank()){
             throw new EmptyFieldException("dish", "name");
         }
-        if (dish.getPrice().isEmpty() || dish.getPrice().isBlank()){
-            throw new EmptyFieldException("dish", "price");
-        }
-        try {
-            Double.parseDouble(dish.getPrice());
-        } catch (NumberFormatException e){
-            throw new IncorrectFormatException("Dish", "price", dish.getPrice(), "Integer, ex. '10' -or- Double, ex. 20.6");
+        if (dish.getPrice() == 0){
+            throw new IncorrectFormatException("Dish", "price", dish.getPrice(), "Integer, ex. '10' -or- Double, ex. 20.6, with value higher than 0");
         }
         Dish dishToSave = dishRepository.save(dish);
-        setDisplayPrice(dishToSave);
-        return dishToSave;
+        return new DishDTO(dishToSave.getId(), dishToSave.getName(), dishToSave.getPrice(), currencyConverter.convertFromSEKToEUR(dishToSave.getPrice()));
     }
 
     @Override
@@ -59,24 +55,6 @@ public class DishService implements DishServiceInterface{
         } else {
             dishRepository.deleteById(id);
         }
-    }
-
-
-    private void setDisplayPrice(Dish dish){
-        Double currentPrice = Double.valueOf(dish.getPrice());
-        dish.setPrice(String.format("%.2f SEK | %.2f EUR", currentPrice, convertCurrency(currentPrice)));
-    }
-
-    public Double convertCurrency(Double price){
-        RestClient restClient = RestClient.create();
-
-        Map<String, Double> rates = (Map<String, Double>) restClient.get()
-                .uri("https://api.frankfurter.dev/v1/latest?base=SEK&to=EUR")
-                .retrieve()
-                .body(Map.class).get("rates");
-        Double rate = rates.get("EUR");
-
-        return price * rate;
     }
 
 }

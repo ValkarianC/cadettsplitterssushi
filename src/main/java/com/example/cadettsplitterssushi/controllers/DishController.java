@@ -1,5 +1,6 @@
 package com.example.cadettsplitterssushi.controllers;
 
+import com.example.cadettsplitterssushi.dto.DishDTO;
 import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.services.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,18 @@ public class DishController {
     @GetMapping("/dishes")
     @ResponseBody
     public ResponseEntity<Object> getDishes(){
-        List<Dish> availableDishes = dishService.getAllDishes();
+        List<DishDTO> availableDishes = dishService.getAllDishes();
         if (availableDishes.isEmpty()){
             return new ResponseEntity<>("No dishes in the database.", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(availableDishes, HttpStatus.FOUND);
+            return new ResponseEntity<>(availableDishes, HttpStatus.OK);
         }
     }
 
     // ADMIN ENDPOINTS
     @PostMapping("/add-dish")
     @ResponseBody
-    public ResponseEntity<Object> addNewDish(@RequestBody Dish dish){
+    public ResponseEntity<DishDTO> addNewDish(@RequestBody Dish dish){
         return new ResponseEntity<>(dishService.createNewDish(dish), HttpStatus.CREATED);
     }
 
