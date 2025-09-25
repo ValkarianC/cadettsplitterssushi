@@ -13,7 +13,7 @@ public class IncorrectFormatException extends RuntimeException {
 
 
     public IncorrectFormatException(String object, String field, Object value, String format    ) {
-        super(String.format("%s with %s value '%s' is invalid. Please enter the value in the following format/s: %s", object, field, value, format));
+        super(String.format("%s with %s value '%s' is invalid. Please enter the value in the following format: %s", object, field, value, format));
         this.object = object;
         this.field = field;
         this.value = value;

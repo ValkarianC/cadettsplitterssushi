@@ -8,7 +8,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(length = 30, name = "room_name", nullable = false)
     private String name;
@@ -22,18 +22,19 @@ public class Room {
     public Room() {
     }
 
-    public Room(long id, String name, Long guestCapacity, Boolean isAvailable) {
+    public Room(Long id, String name, Long guestCapacity, Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.guestCapacity = guestCapacity;
         this.isAvailable = isAvailable;
     }
 
-    public long getId() {
+    public Long getId() {
+
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

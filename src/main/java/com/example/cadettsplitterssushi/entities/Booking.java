@@ -2,6 +2,8 @@ package com.example.cadettsplitterssushi.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Entity
@@ -30,6 +32,12 @@ public class Booking {
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
     private List<Dish> dishes;
+
+    @Column(name = "booking_date")
+    private Date bookingDate;
+
+    @Column(name = "booking_time")
+    private Time bookingTime;
 
     @Column(name = "booking_total_price")
     private Double totalPrice;
