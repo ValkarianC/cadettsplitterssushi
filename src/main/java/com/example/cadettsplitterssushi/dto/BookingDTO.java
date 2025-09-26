@@ -3,45 +3,42 @@ package com.example.cadettsplitterssushi.dto;
 import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.entities.Room;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class BookingDTO {
 
-    private long id;
+    private Long id;
     private String customer;
-    private long numberOfGuests;
+    private Long numberOfGuests;
     private Room room;
     private List<Dish> dishes;
-    private Date date;
-    private Time time;
-    private double priceSEK;
-    private double priceEUR;
-    private boolean isCancelled;
+    private String bookingDate;
+    private String bookingTime;
+    private Double priceSEK;
+    private Double priceEUR;
+    private Boolean isCancelled;
 
     public BookingDTO() {
     }
 
-    public BookingDTO(long id, String customer, long numberOfGuests, Room room, List<Dish> dishes, Date date, Time time, double priceSEK, double priceEUR, boolean isCancelled) {
+    public BookingDTO(Long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, String bookingDate, String bookingTime, Double priceSEK, Double priceEUR, Boolean isCancelled) {
         this.id = id;
         this.customer = customer;
         this.numberOfGuests = numberOfGuests;
         this.room = room;
         this.dishes = dishes;
-        this.date = date;
-        this.time = time;
+        this.bookingDate = bookingDate;
+        this.bookingTime = bookingTime;
         this.priceSEK = priceSEK;
         this.priceEUR = priceEUR;
         this.isCancelled = isCancelled;
     }
 
-    public long getId() {
-
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,11 +50,11 @@ public class BookingDTO {
         this.customer = customer;
     }
 
-    public long getNumberOfGuests() {
+    public Long getNumberOfGuests() {
         return numberOfGuests;
     }
 
-    public void setNumberOfGuests(long numberOfGuests) {
+    public void setNumberOfGuests(Long numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
     }
 
@@ -77,43 +74,43 @@ public class BookingDTO {
         this.dishes = dishes;
     }
 
-    public Date getDate() {
-        return date;
+    public String getBookingDate() {
+        return bookingDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
-    public Time getTime() {
-        return time;
+    public String getBookingTime() {
+        return bookingTime;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setBookingTime(String bookingTime) {
+        this.bookingTime = bookingTime;
     }
 
-    public double getPriceSEK() {
+    public Double getPriceSEK() {
         return priceSEK;
     }
 
-    public void setPriceSEK(double priceSEK) {
+    public void setPriceSEK(Double priceSEK) {
         this.priceSEK = priceSEK;
     }
 
-    public double getPriceEUR() {
+    public Double getPriceEUR() {
         return priceEUR;
     }
 
-    public void setPriceEUR(double priceEUR) {
+    public void setPriceEUR(Double priceEUR) {
         this.priceEUR = priceEUR;
     }
 
-    public boolean isCancelled() {
+    public Boolean getCancelled() {
         return isCancelled;
     }
 
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled(Boolean cancelled) {
         isCancelled = cancelled;
     }
 }

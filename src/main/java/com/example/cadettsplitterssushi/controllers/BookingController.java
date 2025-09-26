@@ -29,7 +29,7 @@ public class BookingController {
     //USER ENDPOINTS
 
     @PostMapping("/bookroom")
-    public ResponseEntity<BookingDTO> bookRoom(@RequestBody Booking booking, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<BookingDTO> bookRoom(@RequestBody BookingDTO booking, @AuthenticationPrincipal UserDetails userDetails){
         return new ResponseEntity<>(bookingService.createBooking(booking, userDetails), HttpStatus.CREATED);
     }
 

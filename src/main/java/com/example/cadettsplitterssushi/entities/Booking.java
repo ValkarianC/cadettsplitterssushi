@@ -48,12 +48,25 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, Double totalPrice, boolean isCancelled) {
+    public Booking(long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean isCancelled) {
         this.id = id;
         this.customer = customer;
         this.numberOfGuests = numberOfGuests;
         this.room = room;
         this.dishes = dishes;
+        this.bookingDate = bookingDate;
+        this.bookingTime = bookingTime;
+        this.totalPrice = totalPrice;
+        this.isCancelled = isCancelled;
+    }
+
+    public Booking(String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean isCancelled) {
+        this.customer = customer;
+        this.numberOfGuests = numberOfGuests;
+        this.room = room;
+        this.dishes = dishes;
+        this.bookingDate = bookingDate;
+        this.bookingTime = bookingTime;
         this.totalPrice = totalPrice;
         this.isCancelled = isCancelled;
     }
@@ -96,6 +109,22 @@ public class Booking {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public Date getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(Date bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public Time getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(Time bookingTime) {
+        this.bookingTime = bookingTime;
     }
 
     public Double getTotalPrice() {
