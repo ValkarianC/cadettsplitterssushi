@@ -1,6 +1,8 @@
 package com.example.cadettsplitterssushi.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -25,7 +27,7 @@ public class Booking {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "booking_meal",
             joinColumns = @JoinColumn(name = "booking_id"),

@@ -1,6 +1,10 @@
 package com.example.cadettsplitterssushi.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.List;
 
 @Entity
 @Table(name = "sushi_dish")
@@ -17,6 +21,9 @@ public class Dish {
     @Column(name = "dish_price")
     private double price;
 
+    @ManyToMany(mappedBy = "dishes")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    List<Booking> bookings;
 
     public Dish() {
     }

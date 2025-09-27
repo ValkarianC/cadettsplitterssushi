@@ -1,10 +1,12 @@
 package com.example.cadettsplitterssushi.services;
 
 import com.example.cadettsplitterssushi.dto.DishDTO;
+import com.example.cadettsplitterssushi.entities.Booking;
 import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
 import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
 import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
+import com.example.cadettsplitterssushi.repositories.BookingRepository;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ import java.util.Optional;
 public class DishService implements DishServiceInterface{
 
     private final DishRepository dishRepository;
+    private final BookingRepository bookingRepository;
     private final CurrencyConverter currencyConverter;
 
     @Autowired
-    public DishService(DishRepository dishRepository, CurrencyConverter currencyConverter) {
+    public DishService(DishRepository dishRepository, BookingRepository bookingRepository, CurrencyConverter currencyConverter) {
         this.dishRepository = dishRepository;
+        this.bookingRepository = bookingRepository;
         this.currencyConverter = currencyConverter;
     }
 

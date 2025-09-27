@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -59,6 +60,28 @@ public class BookingService implements BookingServiceInterface{
         ));
         booking.setId(bookingToSave.getId());
         return booking;
+    }
+
+    @Override
+    public List<BookingDTO> listUpcomingBookings() {
+        List<Booking> bookingList = bookingRepository.findAll();
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for (Booking booking : bookingList){
+            bookingDTOList.add(new BookingDTO(
+                    booking.getId(),
+                    booking.getCustomer(),
+                    booking.getNumberOfGuests(),
+                    booking.getRoom(),
+                    booking.getDishes(),
+                    booking.getBookingDate().toString(),
+                    booking.getBookingTime().toString(),
+                    booking.getTotalPrice(),
+                    currencyConverter.convertFromSEKToEUR(booking.getTotalPrice()),
+                    booking.isCancelled()
+            ));
+        }
+
+        return bookingDTOList;
     }
 
 

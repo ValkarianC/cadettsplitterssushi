@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +47,11 @@ public class BookingController {
     public ResponseEntity<List<BookingDTO>> listCancelledBookings(){
         return null;
     }
+
+    @GetMapping("/listupcoming")
     public ResponseEntity<List<BookingDTO>> listUpcomingBookings(){
-        return null;
+
+        return new ResponseEntity<>(bookingService.listUpcomingBookings(),HttpStatus.OK);
     }
     public ResponseEntity<List<BookingDTO>> listPastBookings(){
         return null;
