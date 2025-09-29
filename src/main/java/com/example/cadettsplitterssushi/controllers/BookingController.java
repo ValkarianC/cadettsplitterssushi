@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,26 +31,53 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.createBooking(booking, userDetails), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<BookingDTO> cancelBooking(@RequestBody Booking booking){
-        return null;
+    @PutMapping("/cancelbooking")
+    public ResponseEntity<BookingDTO> cancelBooking(@RequestBody BookingDTO booking, @AuthenticationPrincipal UserDetails userDetails){
+        return new ResponseEntity<>(bookingService.cancelBooking(booking, userDetails), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<BookingDTO>> getActiveBookings(){
-        return null;
+    @GetMapping("/mybookings")
+    public ResponseEntity<Object> getActiveBookings(@AuthenticationPrincipal UserDetails userDetails){
+        List<BookingDTO> bookings = bookingService.listUserCurrentBookings(userDetails);
+        if (bookings.isEmpty()){
+            return new ResponseEntity<>("You currently have no active bookings in the system", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        }
     }
+
 
     //ADMIN ENDPOINTS
 
-    public ResponseEntity<List<BookingDTO>> listCancelledBookings(){
-        return null;
+    @GetMapping("/listcancelled")
+    public ResponseEntity<Object> listCancelledBookings(){
+        List<BookingDTO> bookings = bookingService.listCancelledBookings();
+        if (bookings.isEmpty()){
+            return new ResponseEntity<>("No cancelled bookings currently in the system", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        }
     }
 
     @GetMapping("/listupcoming")
-    public ResponseEntity<List<BookingDTO>> listUpcomingBookings(){
+    public ResponseEntity<Object> listUpcomingBookings(){
+        List<BookingDTO> bookings = bookingService.listUpcomingBookings();
+        if (bookings.isEmpty()){
+            return new ResponseEntity<>("No upcoming bookings currently in the system", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(bookingService.listUpcomingBookings(),HttpStatus.OK);
     }
-    public ResponseEntity<List<BookingDTO>> listPastBookings(){
-        return null;
+
+    @GetMapping("/listpast")
+    public ResponseEntity<Object> listPastBookings(){
+        List<BookingDTO> bookings = bookingService.listPastBookings();
+        if (bookings.isEmpty()){
+            return new ResponseEntity<>("No past bookings currently in the system", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        }
+
     }
 }

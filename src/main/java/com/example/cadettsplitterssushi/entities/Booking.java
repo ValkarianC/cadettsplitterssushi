@@ -1,8 +1,7 @@
 package com.example.cadettsplitterssushi.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 import java.sql.Date;
 import java.sql.Time;
@@ -45,12 +44,12 @@ public class Booking {
     private Double totalPrice;
 
     @Column(name = "booking_is_cancelled")
-    private boolean isCancelled;
+    private boolean cancelled;
 
     public Booking() {
     }
 
-    public Booking(long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean isCancelled) {
+    public Booking(long id, String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean cancelled) {
         this.id = id;
         this.customer = customer;
         this.numberOfGuests = numberOfGuests;
@@ -59,10 +58,10 @@ public class Booking {
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
         this.totalPrice = totalPrice;
-        this.isCancelled = isCancelled;
+        this.cancelled = cancelled;
     }
 
-    public Booking(String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean isCancelled) {
+    public Booking(String customer, Long numberOfGuests, Room room, List<Dish> dishes, Date bookingDate, Time bookingTime, Double totalPrice, boolean cancelled) {
         this.customer = customer;
         this.numberOfGuests = numberOfGuests;
         this.room = room;
@@ -70,7 +69,7 @@ public class Booking {
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
         this.totalPrice = totalPrice;
-        this.isCancelled = isCancelled;
+        this.cancelled = cancelled;
     }
 
     public long getId() {
@@ -138,10 +137,10 @@ public class Booking {
     }
 
     public boolean isCancelled() {
-        return isCancelled;
+        return cancelled;
     }
 
     public void setCancelled(boolean cancelled) {
-        isCancelled = cancelled;
+        this.cancelled = cancelled;
     }
 }

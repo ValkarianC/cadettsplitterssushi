@@ -63,25 +63,93 @@ public class BookingService implements BookingServiceInterface{
     }
 
     @Override
-    public List<BookingDTO> listUpcomingBookings() {
-        List<Booking> bookingList = bookingRepository.findAll();
+    public BookingDTO cancelBooking(BookingDTO bookingDTO, UserDetails userDetails) {
+
+        if (bookingDTO.getId() == null) {
+            throw new ResourceNotFoundException("Booking", "ID", bookingDTO.getId());
+        }
+        Optional<Booking> bookingToCancel = bookingRepository.findById(bookingDTO.getId());
+        if (bookingToCancel.isEmpty()){
+            throw new ResourceNotFoundException("Booking", "ID", bookingDTO.getId());
+        } else {
+            if (!bookingToCancel.get().getCustomer().equals(userDetails.getUsername())) {
+                throw new InvalidRequestException("Users are only authorised to cancel booking they have made.");
+            } else {
+                if (bookingToCancel.get().isCancelled()){
+                    throw new InvalidRequestException("Booking has already been cancelled.");
+                }
+                if (bookingToCancel.get().getBookingDate().before(Date.valueOf(LocalDate.now().plusWeeks(1)))){
+                    throw new InvalidRequestException("Bookings need to be cancelled with at least 1 weeks notice.");
+                }
+                bookingToCancel.get().setCancelled(true);
+                return createDisplayDTO(bookingRepository.save(bookingToCancel.get()));
+            }
+        }
+    }
+
+    @Override
+    public List<BookingDTO> listUserCurrentBookings(UserDetails userDetails) {
+        List<Booking> bookingList = bookingRepository.findBookingsByCustomer(userDetails.getUsername());
         List<BookingDTO> bookingDTOList = new ArrayList<>();
         for (Booking booking : bookingList){
-            bookingDTOList.add(new BookingDTO(
-                    booking.getId(),
-                    booking.getCustomer(),
-                    booking.getNumberOfGuests(),
-                    booking.getRoom(),
-                    booking.getDishes(),
-                    booking.getBookingDate().toString(),
-                    booking.getBookingTime().toString(),
-                    booking.getTotalPrice(),
-                    currencyConverter.convertFromSEKToEUR(booking.getTotalPrice()),
-                    booking.isCancelled()
-            ));
+            bookingDTOList.add(createDisplayDTO(booking));
         }
-
         return bookingDTOList;
+    }
+
+    @Override
+    public List<BookingDTO> listCancelledBookings() {
+        List<Booking> bookingList = bookingRepository.findBookingsByCancelled(true);
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for (Booking booking : bookingList){
+            bookingDTOList.add(createDisplayDTO(booking));
+        }
+        return bookingDTOList;
+    }
+
+
+    @Override
+    public List<BookingDTO> listUpcomingBookings() {
+        List<Booking> bookingList = bookingRepository.findBookingsByCancelled(false);
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for (Booking booking : bookingList){
+            if (booking.getBookingDate().after(Date.valueOf(LocalDate.now()))){
+                bookingDTOList.add(createDisplayDTO(booking));
+            }
+            if (booking.getBookingDate().equals(Date.valueOf(LocalDate.now())) && booking.getBookingTime().after(Time.valueOf(LocalTime.now()))){
+                bookingDTOList.add(createDisplayDTO(booking));
+            }
+        }
+        return bookingDTOList;
+    }
+
+    @Override
+    public List<BookingDTO> listPastBookings() {
+        List<Booking> bookingList = bookingRepository.findBookingsByCancelled(false);
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for (Booking booking : bookingList){
+            if (booking.getBookingDate().before(Date.valueOf(LocalDate.now()))){
+                bookingDTOList.add(createDisplayDTO(booking));
+            }
+            if (booking.getBookingDate().equals(Date.valueOf(LocalDate.now())) && booking.getBookingTime().before(Time.valueOf(LocalTime.now()))){
+                bookingDTOList.add(createDisplayDTO(booking));
+            }
+        }
+        return bookingDTOList;    }
+
+    private BookingDTO createDisplayDTO(Booking booking){
+        return  new BookingDTO(
+                booking.getId(),
+                booking.getCustomer(),
+                booking.getNumberOfGuests(),
+                booking.getRoom(),
+                booking.getDishes(),
+                booking.getBookingDate().toString(),
+                booking.getBookingTime().toString(),
+                booking.getTotalPrice(),
+                currencyConverter.convertFromSEKToEUR(booking.getTotalPrice()),
+                booking.isCancelled()
+        );
     }
 
 
