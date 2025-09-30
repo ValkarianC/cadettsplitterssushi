@@ -37,6 +37,12 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public Order(String customer, List<Dish> dishes, Double totalPrice) {
+        this.customer = customer;
+        this.dishes = dishes;
+        this.totalPrice = totalPrice;
+    }
+
     public long getId() {
         return id;
     }
