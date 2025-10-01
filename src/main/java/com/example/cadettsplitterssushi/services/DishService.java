@@ -9,6 +9,9 @@ import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.BookingRepository;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class DishService implements DishServiceInterface{
     private final DishRepository dishRepository;
     private final BookingRepository bookingRepository;
     private final CurrencyConverter currencyConverter;
+
+    private static final Logger logger = LoggerFactory.getLogger(DishService.class);
 
     @Autowired
     public DishService(DishRepository dishRepository, BookingRepository bookingRepository, CurrencyConverter currencyConverter) {

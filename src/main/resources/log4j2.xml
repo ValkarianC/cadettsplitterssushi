@@ -1,0 +1,30 @@
+<Configuration status="info">
+    <Properties>
+        <Property name="layout">[%X{user}] [%d] %t %highlight{%5level} %logger - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layout}"/>
+        </Console>
+        <File name="LogFile"
+              fileName="logs/app.log"
+              createOnDemand="true">
+            <PatternLayout pattern="${layout}"/>
+            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </File>
+        <File name="ErrorFile"
+              fileName="logs/error.log">
+            <PatternLayout pattern="${layout}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
