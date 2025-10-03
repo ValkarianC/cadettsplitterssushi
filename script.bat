@@ -10,5 +10,5 @@ call mvn package
 echo Creating image cadett-splitters-sushi
 docker build -t cadett-splitters-sushi .
 echo Creating and running container cadett-splitters-sushi
-docker run -d -p 9900:9900 --name cadett-splitters-sushi --network cadett-splitters-net cadett-splitters-sushi
+docker run -d -p 9595:9595 --name cadett-splitters-sushi --network cadett-splitters-net cadett-splitters-sushi
 echo Done!
