@@ -11,6 +11,8 @@ import com.example.cadettsplitterssushi.repositories.BookingRepository;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.repositories.RoomRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class BookingService implements BookingServiceInterface{
     private final RoomRepository roomRepository;
     private final DishRepository dishRepository;
     private final CurrencyConverter currencyConverter;
+
+    private static final Logger logger = LoggerFactory.getLogger("LogFile");
 
     @Autowired
     public BookingService(BookingRepository bookingRepository, RoomRepository roomRepository, DishRepository dishRepository, CurrencyConverter currencyConverter) {
@@ -58,6 +62,7 @@ public class BookingService implements BookingServiceInterface{
                 booking.getPriceSEK(),
                 false
         ));
+        logger.info("User created a new booking for {} people at {} on {} {}.", bookingToSave.getNumberOfGuests(), bookingToSave.getRoom().getName(), bookingToSave.getBookingDate(), bookingToSave.getBookingTime());
         booking.setId(bookingToSave.getId());
         return booking;
     }
@@ -82,6 +87,7 @@ public class BookingService implements BookingServiceInterface{
                     throw new InvalidRequestException("Bookings need to be cancelled with at least 1 weeks notice.");
                 }
                 bookingToCancel.get().setCancelled(true);
+                logger.info("User cancelled a booking at {} on {} {}.", bookingToCancel.get().getRoom().getName(), bookingToCancel.get().getBookingDate(), bookingToCancel.get().getBookingTime());
                 return createDisplayDTO(bookingRepository.save(bookingToCancel.get()));
             }
         }
@@ -94,6 +100,8 @@ public class BookingService implements BookingServiceInterface{
         for (Booking booking : bookingList){
             bookingDTOList.add(createDisplayDTO(booking));
         }
+        logger.info("User accessed list of their available bookings from database.");
+
         return bookingDTOList;
     }
 
@@ -104,6 +112,8 @@ public class BookingService implements BookingServiceInterface{
         for (Booking booking : bookingList){
             bookingDTOList.add(createDisplayDTO(booking));
         }
+        logger.info("User accessed list of all cancelled bookings from database.");
+
         return bookingDTOList;
     }
 
@@ -120,6 +130,8 @@ public class BookingService implements BookingServiceInterface{
                 bookingDTOList.add(createDisplayDTO(booking));
             }
         }
+        logger.info("User accessed list of all upcoming bookings from database.");
+
         return bookingDTOList;
     }
 
@@ -135,6 +147,8 @@ public class BookingService implements BookingServiceInterface{
                 bookingDTOList.add(createDisplayDTO(booking));
             }
         }
+        logger.info("User accessed list of all past bookings from database.");
+
         return bookingDTOList;    }
 
     private BookingDTO createDisplayDTO(Booking booking){

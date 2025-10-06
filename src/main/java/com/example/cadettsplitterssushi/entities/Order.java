@@ -1,5 +1,6 @@
 package com.example.cadettsplitterssushi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
+    @JsonIgnore
     private List<Dish> dishes;
 
     @Column(name = "order_total_price")

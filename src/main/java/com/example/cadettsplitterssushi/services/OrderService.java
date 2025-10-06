@@ -8,6 +8,8 @@ import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.repositories.OrderRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class OrderService implements OrderServiceInterface{
     private final OrderRepository orderRepository;
     private final DishRepository dishRepository;
     private final CurrencyConverter currencyConverter;
+
+    private static final Logger logger = LoggerFactory.getLogger("LogFile");
 
     @Autowired
     public OrderService(OrderRepository orderRepository, DishRepository dishRepository, CurrencyConverter currencyConverter) {
@@ -42,6 +46,7 @@ public class OrderService implements OrderServiceInterface{
                 order.getTotalPriceSEK()
                 ));
         order.setId(orderToSave.getId());
+        logger.info("User has made a new order with total price: {} SEK|{} EUR. Order ID: {}", order.getTotalPriceSEK(), order.getTotalPriceEUR(), order.getId());
         return order;
     }
 

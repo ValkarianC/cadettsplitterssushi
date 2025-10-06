@@ -1,5 +1,6 @@
 package com.example.cadettsplitterssushi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -32,6 +33,7 @@ public class Booking {
             joinColumns = @JoinColumn(name = "booking_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
+    @JsonIgnore
     private List<Dish> dishes;
 
     @Column(name = "booking_date")

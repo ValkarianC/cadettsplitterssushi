@@ -5,6 +5,8 @@ import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
 import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
 import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.RoomRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class RoomService implements RoomServiceInterface {
 
     private final RoomRepository roomRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger("LogFile");
 
     @Autowired
     public RoomService(RoomRepository roomRepository) {
@@ -37,7 +41,9 @@ public class RoomService implements RoomServiceInterface {
         if (room.getAvailable() == null){
             room.setAvailable(true);
         }
-        return roomRepository.save(room);
+        Room roomToSave = roomRepository.save(room);
+        logger.info("User added a new room - [{}] to the database. Room ID: {}", roomToSave.getName(), roomToSave.getId());
+        return roomToSave;
     }
 
     @Override
@@ -71,7 +77,8 @@ public class RoomService implements RoomServiceInterface {
         } else {
             throw new ResourceNotFoundException("Room", "ID", room.getId());
         }
-
-        return roomRepository.save(roomToUpdate);
+        Room updatedRoom = roomRepository.save(roomToUpdate);
+        logger.info("User updated information in database regarding room [{}]. Room ID: {}", updatedRoom.getName(),updatedRoom.getId());
+        return updatedRoom;
     }
 }
