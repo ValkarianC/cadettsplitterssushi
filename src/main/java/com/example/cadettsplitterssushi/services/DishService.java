@@ -1,7 +1,6 @@
 package com.example.cadettsplitterssushi.services;
 
 import com.example.cadettsplitterssushi.dto.DishDTO;
-import com.example.cadettsplitterssushi.entities.Booking;
 import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
 import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
@@ -9,7 +8,6 @@ import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
 import com.example.cadettsplitterssushi.repositories.BookingRepository;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class DishService implements DishServiceInterface{
     private final BookingRepository bookingRepository;
     private final CurrencyConverter currencyConverter;
 
-    private static final Logger logger = LoggerFactory.getLogger(DishService.class);
+    private static final Logger logger = LoggerFactory.getLogger("LogFile");
 
     @Autowired
     public DishService(DishRepository dishRepository, BookingRepository bookingRepository, CurrencyConverter currencyConverter) {
@@ -41,6 +39,7 @@ public class DishService implements DishServiceInterface{
         for (Dish dish : dishRepository.findAll()){
             dishDTOList.add(new DishDTO(dish.getId(), dish.getName(), dish.getPrice(), currencyConverter.convertFromSEKToEUR(dish.getPrice())));
         }
+        logger.info("User accessed full list of available dishes from database.");
         return dishDTOList;
     }
 
@@ -53,6 +52,8 @@ public class DishService implements DishServiceInterface{
             throw new IncorrectFormatException("Dish", "price", dish.getPrice(), "Integer, ex. '10' -or- Double, ex. 20.6, with value higher than 0");
         }
         Dish dishToSave = dishRepository.save(dish);
+        logger.info("User added new dish - [{}] to database. Dish ID: {}", dishToSave.getName(), dishToSave.getId());
+
         return new DishDTO(dishToSave.getId(), dishToSave.getName(), dishToSave.getPrice(), currencyConverter.convertFromSEKToEUR(dishToSave.getPrice()));
     }
 
@@ -63,6 +64,7 @@ public class DishService implements DishServiceInterface{
             throw new ResourceNotFoundException("Dish", "ID", id);
         } else {
             dishRepository.deleteById(id);
+            logger.info("User removed dish - [{}] from database. Dish ID: {}", dishToRemove.get().getName(), dishToRemove.get().getId());
         }
     }
 

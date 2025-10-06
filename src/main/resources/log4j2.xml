@@ -1,6 +1,6 @@
 <Configuration status="info">
     <Properties>
-        <Property name="layout">[%X{user}] [%d] %t %highlight{%5level} %logger - %msg%n</Property>
+        <Property name="layout">[%X{user}] %d{yyyy-MM-dd HH:mm} [%t] %-5level %logger - %m%n</Property>
     </Properties>
 
     <Appenders>
@@ -8,23 +8,16 @@
             <PatternLayout pattern="${layout}"/>
         </Console>
         <File name="LogFile"
-              fileName="logs/app.log"
-              createOnDemand="true">
+              fileName="logs/app.log">
             <PatternLayout pattern="${layout}"/>
-            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
-        </File>
-        <File name="ErrorFile"
-              fileName="logs/error.log">
-            <PatternLayout pattern="${layout}"/>
-            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
         </File>
     </Appenders>
-
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="LogFile"/>
-            <AppenderRef ref="ErrorFile"/>
         </Root>
+        <Logger name="LogFile" level="info" additivity="false">
+            <AppenderRef ref="LogFile"/>
+        </Logger>
     </Loggers>
 </Configuration>
