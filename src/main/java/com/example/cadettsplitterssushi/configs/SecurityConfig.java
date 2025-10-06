@@ -22,10 +22,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
-                                        "/api/wigellsushi/dishes",
-                                        "/api/wigellsushi/rooms"
-                                ).permitAll()
-                                .requestMatchers(
                                         "/api/wigellsushi/bookroom",
                                         "/api/wigellsushi/cancelbooking",
                                         "/api/wigellsushi/mybookings"
@@ -39,7 +35,7 @@ public class SecurityConfig {
                                         "/api/wigellsushi/addroom",
                                         "/api/wigellsushi/updateroom"
                                 ).hasRole("ADMIN")
-                                .anyRequest().permitAll() //TODO: Only use while developing, remove later
+                                .anyRequest().authenticated()
                 );
         return http.build();
     }
