@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(MockitoExtension.class)
-class DishControllerTest {
+class DishControllerDishServiceIntegerationTest {
 
     @Mock
     private DishRepository dishRepositoryMock;
