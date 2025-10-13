@@ -18,6 +18,6 @@ public class CurrencyConverter {
                 .body(Map.class).get("rates");
         double rate = rates.get("EUR");
 
-        return priceSEK * rate;
+        return Double.parseDouble(String.format("%.2f", priceSEK * rate));
     }
 }
