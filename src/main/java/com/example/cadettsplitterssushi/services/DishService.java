@@ -5,7 +5,6 @@ import com.example.cadettsplitterssushi.entities.Dish;
 import com.example.cadettsplitterssushi.exceptions.EmptyFieldException;
 import com.example.cadettsplitterssushi.exceptions.IncorrectFormatException;
 import com.example.cadettsplitterssushi.exceptions.ResourceNotFoundException;
-import com.example.cadettsplitterssushi.repositories.BookingRepository;
 import com.example.cadettsplitterssushi.repositories.DishRepository;
 import com.example.cadettsplitterssushi.util.CurrencyConverter;
 import org.slf4j.Logger;
@@ -21,15 +20,13 @@ import java.util.Optional;
 public class DishService implements DishServiceInterface{
 
     private final DishRepository dishRepository;
-    private final BookingRepository bookingRepository;
     private final CurrencyConverter currencyConverter;
 
     private static final Logger logger = LoggerFactory.getLogger("LogFile");
 
     @Autowired
-    public DishService(DishRepository dishRepository, BookingRepository bookingRepository, CurrencyConverter currencyConverter) {
+    public DishService(DishRepository dishRepository, CurrencyConverter currencyConverter) {
         this.dishRepository = dishRepository;
-        this.bookingRepository = bookingRepository;
         this.currencyConverter = currencyConverter;
     }
 
